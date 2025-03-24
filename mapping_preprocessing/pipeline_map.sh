@@ -79,7 +79,7 @@ fi
 if [[ $2 =~ "2" ]]
 then
     echo "mapping"
-    genome_index="path of GRCh38.mmi" # path of human genome index
+    genome_index="path of GRCh38.mmi" # path of human genome minimap2 index
     genome_bedgff="path of anno.bed" # path of splice junctions generated with the paftools
 
     echo "minimap2 -ax splice --junc-bed -un $genome_bedgff -t 5  $genome_index $results_trimmed/trimmed.fastq.gz"

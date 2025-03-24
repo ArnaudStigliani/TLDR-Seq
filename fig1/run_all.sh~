@@ -1,0 +1,10 @@
+#!/bin/bash
+
+./get_polyA_bam_files.sh lib1
+./get_polyA_bam_files.sh lib2
+./get_polyA_bam_files.sh R10
+
+charaterize_polyA.r
+
+annotate_reads.r
+make_fig_1.r

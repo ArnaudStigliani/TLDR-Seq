@@ -8,62 +8,70 @@ library(bambu)
 
 shared.data.dir <- "../../../shared_data/human_genome"
 
-out_dir <- ".//annotate_reads_v2"
+out_dir <- "./annotate_reads"
 dir.create(out_dir, showWarnings=FALSE, recursive=TRUE)
 
-in_dir.lib1 <- ".//get_polyA_bam_files/lib1"
-in_dir.lib2 <- ".//get_polyA_bam_files/lib2"
-in.dir.ont <- "../../data/nanopore/results_curated"
-in.dir.RNASeq <- "../../data/RNASeq/salmon_mapping"
-out_RNASeq <- "../../results/sequencing_july_2023/shared/annotate_reads_v2/RNASeq/"
-gtf.name <- "../../../shared_data/human_genome/gencode.v39.primary_assembly.annotation.sorted.gtf"
-fas.name <- "../../../shared_data/human_genome/GRCh38.primary_assembly.genome.fa"
+in_dir.lib1 <- "./get_polyA_bam_files/lib1"
+in_dir.R10 <- "./get_polyA_bam_files/R10"
+in_dir.lib2 <- "./get_polyA_bam_files/lib2"
+in.dir.ont <- "../map_ONTnanopore/results_curated"
+in.dir.RNASeq <- "../data/RNASeq/salmon_mapping" ## path to RNASeq fastq files
+out_RNASeq <- file.path(out_dir,"./RNASeq/" )
+
+
+gtf.name <- "../data/gencode.v39.primary_assembly.annotation.sorted.gtf" # path to gtf file
+fas.name <- "../data/GRCh38.primary_assembly.genome.fa" # path to fasta genome  file
+
+
+
+## create bambu annotation file
+annotations <- prepareAnnotations(gtf.name)
+saveRDS(annotations, file.path(out_dir, "annotations.rds")) 
+annotations <- readRDS(file.path(out_dir, "annotations.rds"))
 
 
 #### for ont files, create a merged bam file
 bam_ont_merged <- file.path(out_dir, "ont_merged.bam")
 
-## command <- paste(" module load samtools; samtools merge /dev/stdout",
-##                  file.path(in.dir.ont, c("nanopore_wt1_curated.bam")),
-##                  file.path(in.dir.ont, c("nanopore_wt2_curated.bam")),                 
-##                  "| samtools sort -@ 20 > ", bam_ont_merged ,
-##                  "; samtools index ", bam_ont_merged) 
-## system(command)
+command <- paste(" module load samtools; samtools merge /dev/stdout",
+                 file.path(in.dir.ont, c("nanopore_wt1_curated.bam")),
+                 file.path(in.dir.ont, c("nanopore_wt2_curated.bam")),                 
+                 "| samtools sort -@ 20 > ", bam_ont_merged ,
+                 "; samtools index ", bam_ont_merged) 
+system(command)
 
 
-### for R10 data, separate pA reads from non pA  reads
-bam_R10_merged <- file.path(".//compare_lib1_lib3",  "R10.bam")
+### for R10 data, separate pA reads from non pA  reads (diffeent from lib1 and lib2 because of some symbolic link silly issue)
+
+bam_R10_merged <- file.path(in_dir.R10, "trimmed_primmary_renamed.bam")
 bam_R10_pA <- file.path(out_dir, "R10_polyA_plus.bam")
 bam_R10_npA <- file.path(out_dir, "R10_polyA_minus.bam")
 
-R10_pA_list.name <- file.path( ".//get_pA_reads", "reads_pA.txt")
-R10_npA_list.name <- file.path( ".//get_pA_reads", "no_polyA.list")
+R10_pA_list.name <- file.path( "../mapping_preprocessing/get_pA_reads_R10", "reads_pA.txt")
+R10_npA_list.name <- file.path( "../mapping_preprocessing/get_pA_reads_R10", "no_polyA.list")
 
-## command1 <- paste("module load samtools; samtools view -b -N",  R10_pA_list.name, bam_R10_merged, ">", bam_R10_pA , "&\n" )
-## command2 <- paste("module load samtools; samtools view -b -N",  R10_npA_list.name, bam_R10_merged, ">", bam_R10_npA)
+command1 <- paste("module load samtools; samtools view -b -N",  R10_pA_list.name, bam_R10_merged, ">", bam_R10_pA , "&\n" )
+command2 <- paste("module load samtools; samtools view -b -N",  R10_npA_list.name, bam_R10_merged, ">", bam_R10_npA)
 
-## system(paste(command1 ,command2, "& wait" ))
-
-
-### Quantify RNASeq files
-
-## salmon.index <-  "../../../shared_data/human_genome/salmon_index"
-
-## RNASeq.pair1.name <- file.path(in.dir.RNASeq, "HeLA_1.fastq")
-## RNASeq.pair2.name <- file.path(in.dir.RNASeq, "HeLA_2.fastq")
-
-## command <- paste("module unload R-packages; module unload R; module unload gcc; module load gcc/13.2.0; salmon quant -i",
-##                  salmon.index," -l IU -1",
-##                  RNASeq.pair1.name, "-2",  RNASeq.pair2.name ,
-##                  "--allowDovetail -o", file.path(out_dir,"RNASeq"),
-##                  "--validateMappings -p 20")
-## system(command)
-
-## Quantify all babu based bam files
+system(paste(command1 ,command2, "& wait" ))
 
 
+## Quantify RNASeq files using salmon
 
-### create symbolic links
+salmon.index <-  "Path_to_salmon_index/salmon_index"
+
+RNASeq.pair1.name <- file.path(in.dir.RNASeq, "HeLA_1.fastq")
+RNASeq.pair2.name <- file.path(in.dir.RNASeq, "HeLA_2.fastq")
+
+command <- paste("module unload R-packages; module unload R; module unload gcc; module load gcc/13.2.0; salmon quant -i",
+                 salmon.index," -l IU -1",
+                 RNASeq.pair1.name, "-2",  RNASeq.pair2.name ,
+                 "--allowDovetail -o", out_RNASeq,
+                 "--validateMappings -p 20")
+system(command)
+
+
+### create symbolic links because bambu only looks at the basename, making it crash if 2 files gave the same basename
 lib1.links <- list.files(in_dir.lib1, pattern="bam$", full.names=TRUE) %>%
     {file.path(out_dir, paste0("lib1_",
                                basename(.) %>%
@@ -88,11 +96,11 @@ all_bam_files <- c(list.files(out_dir, pattern="^lib.*bam$", full.names=TRUE),
     setNames(basename(.) %>% str_replace( "trimmed_primary_polyA_", "") %>% str_replace(".bam", "") )
 
 
-annotations <- readRDS(file.path("./reproducibility/09-08-2023", "annotations.rds"))
-## LongReads.quant <- bambu(reads = all_bam_files,  annotations = annotations,
-##                           genome = fas.name, discovery = FALSE, ncore = 20)
 
-## LongReads.gene.tpm <- transcriptToGeneExpression(LongReads.quant)
+LongReads.quant <- bambu(reads = all_bam_files,  annotations = annotations,
+                          genome = fas.name, discovery = FALSE, ncore = 20)
+
+# LongReads.gene.tpm <- transcriptToGeneExpression(LongReads.quant)
 
 
 df.quant <- LongReads.quant %>%
@@ -105,7 +113,7 @@ df.quant <- read.table(file=file.path(out_dir, "quant.tsv"), header=TRUE, sep="\
 
 ######## read nanocounts files
 
-## RNASeq.name <- "../../data/RNASeq/salmon_mapping/mapping_salmon/HeLA/quant.sf"
+RNASeq.name <- file.path(out_RNASeq, "quant.sf")
 
 tr.types.c <- c("lncRNA" ,"nonsense_mediated_decay" ,"non_stop_decay" ,"retained_intron" ,"protein_coding" ,"protein_coding_LoF" ,"protein_coding_CDS_not_defined" ,"processed_transcript" ,"non_coding" ,"ambiguous_orf" ,"sense_intronic" ,"sense_overlapping" ,"antisense/antisense_RNA" ,"transcribed_processed_pseudogene" ,"transcribed_unprocessed_pseudogene" ,"transcribed_unitary_pseudogene" ,"translated_processed_pseudogene" ,"translated_unprocessed_pseudogene" ,"lincRNA" ,"macro_lncRNA" ,"3prime_overlapping_ncRNA" ,"disrupted_domain" ,"bidirectional_promoter_lncRNA")
 
@@ -114,7 +122,8 @@ RNASeq.name <- file.path(out_RNASeq, "quant.sf")
 RNASeq.df <-  read.table(RNASeq.name, header=TRUE) %>%
     dplyr::select(Name, RNASeq = TPM)
 
-Nanocount.placeholder.name <- "../../results/sequencing_july_2023/shared/annotate_reads_v2/tx_lib1_polyA_minus.tsv"
+Nanocount.placeholder.name <- "../../results/sequencing_july_2023/shared/annotate_reads_v2/tx_lib1_polyA_minus.tsv" ## Use old Nanocount output to get transcript types.  One can also use the gtf file to obtain the same information
+
 tr.type <- read.table(Nanocount.placeholder.name, header=TRUE) %>%
     dplyr::select(transcript_name) %>%
     mutate(tr.type = str_split(transcript_name, "\\|", simplify=TRUE) %>% .[,(ncol(.)-1 )]) %>%
