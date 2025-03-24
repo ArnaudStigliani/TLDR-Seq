@@ -5,15 +5,14 @@ module load samtools
 
 
 
-bam_genome=../../results/reviews/pipeline_map_R10/mapping/trimmed_primary.bam
-results=../../results/reviews/get_processed_bam_files_R10/
+bam_genome=../mapping_preprocessing/results/pipeline_map/mapping/trimmed_primary.bam
+results=./results/get_processed_bam_files_R10/
 mkdir -p  $results
 
 
 echo $results
 
 
-bam_polyA_processed=$results/trimmed_primary_processed.bam
 bam_header=$results/bam.header
 
 
