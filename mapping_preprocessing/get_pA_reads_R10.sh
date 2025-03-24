@@ -5,7 +5,7 @@ module load samtools
 bam_in=$1
 
 bam_in="path to basecalled bam file"
-results=../../results/reviews/get_pA_reads_R10
+results=./results/get_pA_reads_R10
 
 mkdir -p  $results
 

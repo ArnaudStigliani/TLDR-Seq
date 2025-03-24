@@ -9,7 +9,7 @@ export TPMDIR=/maps/projects/sandelin_main/scratch
 
 sequencing_run=$1
 
-results=./results/TLDRSeq/pipeline_map/$sequencing_run
+results=./results/pipeline_map/$sequencing_run
 mkdir -p  $results
 
 fastq_in=../data/$sequencing_run/all_pass.fastq.gz # assuming your fastq files are stored in the directory ../data/

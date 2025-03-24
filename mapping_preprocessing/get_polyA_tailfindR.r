@@ -9,9 +9,9 @@ library(rbokeh)
 arg = commandArgs(trailingOnly=TRUE)
 ### arg[1] <- "Name of the  sequencing run"
 
-in_dir <- file.path("./results/TLDRSeq/demultiplex_reads_from_fast5/", arg[1])
+in_dir <- file.path("./results/demultiplex_reads_from_fast5/", arg[1])
 
-out_dir <- file.path("./results/TLDRSeq/get_polyA_tailfindr",  arg[1])
+out_dir <- file.path("./results/get_polyA_tailfindr",  arg[1])
 dir.create(out_dir, showWarnings = FALSE, recursive = TRUE)
 
 

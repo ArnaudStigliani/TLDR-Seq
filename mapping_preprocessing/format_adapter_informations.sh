@@ -2,9 +2,9 @@
 
 
 sequencing_run=$1
-data=./results/TLDRSeq/pipeline_map/$sequencing_run
+data=./results/pipeline_map/$sequencing_run
 
-results=./results/TLDRSeq/format_adapter_information/$sequencing_run
+results=./results/format_adapter_information/$sequencing_run
 echo $results
 tsv_files=$results/tsv_files
 mkdir -p $results $tsv_files

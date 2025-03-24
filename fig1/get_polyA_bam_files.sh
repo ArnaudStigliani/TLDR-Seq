@@ -3,9 +3,9 @@
 
 module load samtools
 
-data=$1 ## ../mapping_proeprocessing/pipeline_map/{lib1 or lib2 or R10}/mappping/trimmed_primary.bam
+data=$1 ## ../mapping_preprocessing/pipeline_map/{lib1 or lib2 or R10}/mappping/trimmed_primary.bam
 lib=$(sed 's/.*lib\(.\).*/lib\1/' <<< $data)
-results=./results/reviews/get_polyA_bam_files/$lib
+results=./results/get_polyA_bam_files/$lib
 mkdir -p $results 
 
 
