@@ -5,9 +5,9 @@ fast5_dir=$2 ## add the path of the fast5 files
 
 
 
-data=../../results/TLDRSeq/demultiplex_read_names/$sequencing_run
+data=./results/TLDRSeq/demultiplex_read_names/$sequencing_run
 
-results=../../results/TLDRSeq/demultiplex_reads_from_fast5/$sequencing_run
+results=./results/TLDRSeq/demultiplex_reads_from_fast5/$sequencing_run
 echo $results
 mkdir -p $results 
 read_names_dir=$data

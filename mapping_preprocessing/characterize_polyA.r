@@ -7,9 +7,9 @@ library(ggplot2)
 arg = commandArgs(trailingOnly=TRUE)
 ### arg[1] <- "Name of the  sequencing run"
 
-in_dir <- file.path("../../results/TLDRSeq/get_polyA_tailfindr/", arg[1])
+in_dir <- file.path("./results/TLDRSeq/get_polyA_tailfindr/", arg[1])
 
-out_dir <- file.path("../../results/TLDRSeq/characterize_polyA",  arg[1])
+out_dir <- file.path("./results/TLDRSeq/characterize_polyA",  arg[1])
 dir.create(out_dir, showWarnings = FALSE, recursive = TRUE)
 
 

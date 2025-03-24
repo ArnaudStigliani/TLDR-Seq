@@ -6,12 +6,12 @@ library(reshape2)
 
 arg  <-  commandArgs(trailingOnly=TRUE)
 
-## arg[1] <- "../../results/TLDRSeq/{name sequening run}/format_adapter_information/"
+## arg[1] <- "./results/TLDRSeq/{name sequening run}/format_adapter_information/"
 
 
 if (is.null(arg[1]))
 {
-    print("provide arguments in such a manner\nRscript ../../results/TLDRSeq/{name sequening run}/format_adapter_information/")
+    print("provide arguments in such a manner\nRscript ./results/TLDRSeq/{name sequening run}/format_adapter_information/")
     quit()
 }
 

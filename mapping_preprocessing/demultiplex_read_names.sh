@@ -2,9 +2,9 @@
 
 
 sequencing_run=$1
-data=../../results/TLDRSeq/pipeline_map/$sequencing_run
+data=./results/TLDRSeq/pipeline_map/$sequencing_run
 
-results=../../results/TLDRSeq/demultiplex_read_names/$sequencing_run
+results=./results/TLDRSeq/demultiplex_read_names/$sequencing_run
 echo $results
 mkdir -p $results 
 fastq=$data/trimmed.fastq.gz

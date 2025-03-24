@@ -4,9 +4,9 @@ module load samtools
 
 
 sequencing_run=$1
-data=../../results/TLDRSeq/characterize_polyA/$sequencing_run
+data=./results/TLDRSeq/characterize_polyA/$sequencing_run
 
-results=../../results/TLDRSeq/get_polyA_bam_files/$sequencing_run
+results=./results/TLDRSeq/get_polyA_bam_files/$sequencing_run
 
 
 echo $results

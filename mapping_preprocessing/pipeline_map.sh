@@ -9,7 +9,7 @@ export TPMDIR=/maps/projects/sandelin_main/scratch
 
 sequencing_run=$1
 
-results=../../results/TLDRSeq/pipeline_map/$sequencing_run
+results=./results/TLDRSeq/pipeline_map/$sequencing_run
 mkdir -p  $results
 
 fastq_in=$data/all_pass.fastq.gz
@@ -75,8 +75,8 @@ fi
 if [[ $2 =~ "2" ]]
 then
     echo "mapping"
-    genome_index=../../../shared_data/human_genome/minimap2_index/GRCh38.mmi # path of human genome index
-    genome_bedgff=../../../shared_data/human_genome/minimap2_index/anno.bed # path of splice junctions
+    genome_index=./../shared_data/human_genome/minimap2_index/GRCh38.mmi # path of human genome index
+    genome_bedgff=./../shared_data/human_genome/minimap2_index/anno.bed # path of splice junctions
 
     echo "minimap2 -ax splice --junc-bed -un $genome_bedgff -t 5  $genome_index $results_trimmed/trimmed.fastq.gz"
     minimap2 -ax splice -un  -t 50  $genome_index $results/trimmed.fastq.gz   | samtools view  -S -b  > $results_mapped/trimmed.bam  2> $results_mapped/trimmed.log 
