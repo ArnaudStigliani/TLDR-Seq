@@ -45,3 +45,11 @@ Rscript eiffel_tower_enhancer_plot_step3_pAm.r mES-ZCCHC8
 Rscript eiffel_tower_enhancer_plot_step3_pAm.r mES-RBM7 
 
 Rscript eiffel_tower_enhancer_plot_step4.r 
+
+### read statistics
+
+get_summary_stats_reads.r
+get_summary_stats_reads_both.r
+get_summary_stats_reads_enhancers.r
+
+exit 0
