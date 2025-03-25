@@ -20,10 +20,11 @@ R10_lib1_tss_name_polyA=$output/R10_lib1_polyA_reads_stranded.bed
 
 R10_lib3_tss_name=./results/bedfiles_from_bam/R10.bed
 
-
 grep -f  $lib1_polyA_reads  $lib1_tss_name >  $lib1_tss_name_polyA
 grep -f  $lib2_polyA_reads  $lib2_tss_name >  $lib2_tss_name_polyA
 grep -f  $R10_lib1_polyA_reads  $R10_lib1_tss_name >  $R10_lib1_tss_name_polyA
+
+
 
 gencodeall_tss_name="../data/gencode_v39_all_transcripts_for_TLDR.bed"
 gencodesubset_tss_name="../data/gencode_v39_subset_selected_transcripts_for_TLDR.bed"
