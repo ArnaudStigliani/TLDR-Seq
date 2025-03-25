@@ -6,16 +6,16 @@ library(Biostrings)
 library(ShortRead)
 library(bambu)
 
-shared.data.dir <- "../../../shared_data/human_genome"
+shared.data.dir <- "../data/human_genome"
 
-out_dir <- "./annotate_reads"
+out_dir <- "./results/annotate_reads"
 dir.create(out_dir, showWarnings=FALSE, recursive=TRUE)
 
-in_dir.lib1 <- "./get_polyA_bam_files/lib1"
-in_dir.R10 <- "./get_polyA_bam_files/R10"
-in_dir.lib2 <- "./get_polyA_bam_files/lib2"
+in_dir.lib1 <- "./results/get_polyA_bam_files/lib1"
+in_dir.R10 <- "./results/get_processed_bam_files_R10"
+in_dir.lib2 <- "./results/get_polyA_bam_files/lib2"
 in.dir.ont <- "../map_ONTnanopore/results_curated"
-in.dir.RNASeq <- "../data/RNASeq/salmon_mapping" ## path to RNASeq fastq files
+in.dir.RNASeq <- "../data/RNASeq" ## path to RNASeq fastq files
 out_RNASeq <- file.path(out_dir,"./RNASeq/" )
 
 
@@ -41,14 +41,14 @@ command <- paste(" module load samtools; samtools merge /dev/stdout",
 system(command)
 
 
-### for R10 data, separate pA reads from non pA  reads (diffeent from lib1 and lib2 because of some symbolic link silly issue)
+### for R10 data, separate pA reads from non pA  reads (diffeent from lib1 and lib2 because)
 
 bam_R10_merged <- file.path(in_dir.R10, "trimmed_primmary_renamed.bam")
 bam_R10_pA <- file.path(out_dir, "R10_polyA_plus.bam")
 bam_R10_npA <- file.path(out_dir, "R10_polyA_minus.bam")
 
-R10_pA_list.name <- file.path( "../mapping_preprocessing/get_pA_reads_R10", "reads_pA.txt")
-R10_npA_list.name <- file.path( "../mapping_preprocessing/get_pA_reads_R10", "no_polyA.list")
+R10_pA_list.name <- file.path( "../mapping_preprocessing/results/get_pA_reads_R10", "reads_pA.txt")
+R10_npA_list.name <- file.path( "../mapping_preprocessing/results/get_pA_reads_R10", "no_polyA.list")
 
 command1 <- paste("module load samtools; samtools view -b -N",  R10_pA_list.name, bam_R10_merged, ">", bam_R10_pA , "&\n" )
 command2 <- paste("module load samtools; samtools view -b -N",  R10_npA_list.name, bam_R10_merged, ">", bam_R10_npA)
@@ -85,7 +85,7 @@ lib2.links <- list.files(in_dir.lib2, pattern="bam$", full.names=TRUE) %>%
 command.lib2 <- paste("ln -s", list.files(in_dir.lib2, pattern="bam$", full.names=TRUE), lib2.links)
 
 commands <- c(command.lib1, command.lib2) %>%
-    str_replace_all("../../", "/maps/projects/scarball/people/fzh976/binf-isilon/polyA_CAGE/") %>% paste(collapse="; ")
+    str_replace_all("./", getwd() ) %>% paste(collapse="; ")
 system(commands)
 
 ####
