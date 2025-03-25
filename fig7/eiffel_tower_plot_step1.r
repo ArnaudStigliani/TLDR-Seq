@@ -11,7 +11,7 @@ library(stringr)
 library(genomation)
 
 
-out_dir <- "../../results/sequencing_run_before_promethion2/shared/eiffel_tower_plot/"
+out_dir <- "./results/shared/eiffel_tower_plot/"
 dir.create(out_dir, showWarnings=FALSE, recursive=TRUE )
 
 
@@ -19,15 +19,14 @@ dir.create(out_dir, showWarnings=FALSE, recursive=TRUE )
 
 ### generate a bed file from bam
 
-reads.curated_polyA_RBM7.name <- "../../results/sequencing_run_before_promethion2/mES-RBM7/get_primary_processed_bam/trimmed_primary_polyA_plus.bam"
-reads.curated_polyA_ZCCHC8.name <- "../../results/sequencing_run_before_promethion2/mES-ZCCHC8/get_primary_processed_bam/trimmed_primary_polyA_plus.bam"
+reads.curated_polyA_RBM7.name <- "./results/mES-RBM7/get_primary_processed_bam/trimmed_primary_polyA_plus.bam"
+reads.curated_polyA_ZCCHC8.name <- "./results/mES-ZCCHC8/get_primary_processed_bam/trimmed_primary_polyA_plus.bam"
 read_curated_bed.name <- file.path(out_dir, "trimmed_primary_polyA_plus.bed")
 
 read_curated_polyA_RBM7_bed.name <- file.path(out_dir, "trimmed_primary_polyA_plus_RBM7.bed")
 read_curated_polyA_ZCCHC8_bed.name <- file.path(out_dir, "trimmed_primary_polyA_plus_ZCCHC8.bed")
 
-gencode_prot_coding_bed.name <- "../../../shared_data/Mus_musculus.GRCm39.103.protein_coding.bed6"
-gencode_annot.name <- "../../../shared_data/Mus_musculus.GRCm39.103.bed6" ### choose this one for the end
+gencode_annot.name <- "../data/Mus_musculus.GRCm39.103.bed6" ### gtf converted to bed
 
 command1 <- paste("module load bedtools;  bedtools bamtobed -i", reads.curated_polyA_RBM7.name,
                   "| bedtools intersect -a -  -b", gencode_prot_coding_bed.name, " -wa | uniq >",
@@ -60,28 +59,6 @@ format_bed <- function(bed, cov)
         arrange(chr, start.tss)
     return(bed.formatted)
 }
-
-## old code
-## determine.windows <- function(df)
-## {
-##     w.size <- 3000
-##     a <- lapply(0:(w.size-1), function(x, y) (y[["start.tss"]] + x) %/% w.size , df ) %>%
-##         setNames(paste0("window.", 0:(w.size-1))) %>%
-##         do.call(cbind.data.frame, .) %>%
-##         cbind.data.frame(df, .)
-##     for(i in 0:(w.size-1))
-##     {
-##         oldname <- paste0("window.",i)
-##         a <- a %>%
-##             mutate(w := get(!!oldname)) %>%
-##             arrange(strand, chr, w, ifelse(strand=="+", start.tss,  desc(start.tss) )) %>% 
-##             group_by(chr, w, strand) %>% 
-##             dplyr::slice(1)
-##     }
-##     a  <- a %>% ungroup
-##     return(a)
-## }
-
 
 ### has to be run on each strand
 determine.windows <- function(df)

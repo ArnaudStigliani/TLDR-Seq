@@ -10,16 +10,13 @@ library(parallel)
 library(stringr)
 library(genomation)
 
-in_dir <- file.path("../../results/sequencing_run_before_promethion2/shared/eiffel_tower_plot_enhancer/")
+in_dir <- file.path("./results/shared/eiffel_tower_plot_enhancer/")
 out_dir <- in_dir
 
 genos <- c("mES-WT1", "mES-RBM7", "mES-ZCCHC8")
 
 cov.names <- c(file.path(in_dir, genos, "cov_to_plot_pAp.tsv"),
                file.path(in_dir, genos, "cov_to_plot_pAm.tsv"))
-
-## levels1.y <- read.table(file.path(in_dir, genos[2], "list_tss_sorted.tsv")) %>%
-## .$V1
 
 #### norm factor
 reads_bed.name <- file.path(in_dir,genos, "trimmed_primary.bed")
@@ -42,7 +39,6 @@ cov1.df <- cov.names %>%
     mutate( geno = factor(geno, levels = genos[c(2,1,3)]))
 
 offset.df <- cov1.df  %>%
-    ## dplyr::filter(group.var =="chr10:110688299-110693299") %>%
     dplyr::filter(direction=="reverse") %>%
     dplyr::filter( position <= 0, position > - 600) %>%
     group_by(region, position, direction, group.var, geno) %>%
@@ -100,7 +96,6 @@ RoI <- cov.df %>% dplyr::filter(geno =="mES-RBM7") %>%
     dplyr::filter(offset < -150) %>%
     arrange(min.cov) 
     
-
 
 
     
@@ -179,11 +174,8 @@ g <- ggplot(cov.df %>%
           dplyr::filter(group.var %in% eiffel_dnase1_complete.df$group.var), aes(x=position, y=region, fill=log.cov)) +
     geom_tile() +
     scale_fill_gradientn(colours=my_palette, values=scales::rescale(col_breaks), limits = c(-1,1)) +
-    ## scale_y_discrete(breaks = levels.y %>% matrix(ncol=2, byrow=TRUE) %>% .[,1] %>% c) +
-    ## theme(axis.text.y = element_text(size = 6))
     theme_classic() +
     theme(axis.text.x = element_text(angle = 45, vjust = 1, hjust=1)) + 
-    ## theme(legend.key.size = unit(0.35, "cm"), legend.text=element_text(size=7),legend.title=element_text(size=7)) +
     theme(axis.text.y = element_blank(),axis.ticks.y=element_blank())  +
     facet_grid( vars(polyA), vars(geno))
 ggsave(out_eiffel, g, width=6, height=4)
@@ -220,9 +212,7 @@ cov.df %>%
     distinct(group.var, region) %>%
     group_by(group.var) %>% 
     add_count %>%
-    dplyr::filter(n == 1) 
-
-%>%
+    dplyr::filter(n == 1)  %>%
     ungroup %>%
     dplyr::filter(n == 2) %>%
     .$group.var %>% unique %>% length

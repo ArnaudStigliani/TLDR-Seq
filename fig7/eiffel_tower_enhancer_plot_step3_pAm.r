@@ -15,7 +15,7 @@ arg = commandArgs(trailingOnly=TRUE)
 geno <- arg[1]
 ## geno <- "mES-RBM7"
 
-in_dir <- file.path("../../results/sequencing_run_before_promethion2/shared/eiffel_tower_plot_enhancer/", geno)
+in_dir <- file.path("./results/shared/eiffel_tower_plot_enhancer/", geno)
 out_dir <- in_dir
 
 

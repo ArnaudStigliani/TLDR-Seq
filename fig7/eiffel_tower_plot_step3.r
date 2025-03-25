@@ -13,16 +13,13 @@ library(genomation)
 arg = commandArgs(trailingOnly=TRUE)
 
 geno <- arg[1]
-geno <- "mES-WT1"
+## geno <- "mES-WT1" 
 
-in_dir <- file.path("../../results/sequencing_run_before_promethion2/shared/eiffel_tower_plot/", geno)
+in_dir <- file.path("./results/shared/eiffel_tower_plot/", geno)
 out_dir <- in_dir
 
 reads_bed.name <- file.path(in_dir, "trimmed_primary.bed")
 reads_bed.range <- readBed(reads_bed.name)
-
-## reads_bed2.name <- file.path(in_dir, "trimmed_primary.bed")
-## reads_bed2.range <- readBed(reads_bed2.name)
 
 
 tss_window_plus_forward.bdg.name <-   file.path(in_dir, "tss_plus_window_forward.bdg")

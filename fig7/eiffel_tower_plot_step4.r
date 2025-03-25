@@ -11,7 +11,7 @@ library(stringr)
 library(genomation)
 
 
-in_dir <- file.path("../../results/sequencing_run_before_promethion2/shared/eiffel_tower_plot/")
+in_dir <- file.path("./results/shared/eiffel_tower_plot/")
 out_dir <- in_dir
 
 genos <- c("mES-WT1", "mES-RBM7", "mES-ZCCHC8")
@@ -47,10 +47,6 @@ offset.df <- cov1.df %>%
 
 levels.y <- offset.df %>% rev
 
-## levels.y <- read.table(file.path(in_dir, genos[2], "list_tss_sorted.tsv")) %>%
-##     .$V1 %>%
-##     .[. %in% offset.df]
-
 cov.df <- cov1.df %>%
     dplyr::filter(region %in% levels.y) %>%
     mutate(region = factor(region, levels = levels.y))
@@ -75,8 +71,6 @@ g <- ggplot(cov.df , aes(x=position, y=region, fill=log.cov)) +
 
 out_eiffel <- file.path(out_dir, "eiffel.png")
 ggsave(out_eiffel, g, width=12, height=8)
-## out_eiffel <- file.path(out_dir, "eiffel.pdf")
-## ggsave(out_eiffel, g, width=12, height=12)
 
 
 ### for reviewers

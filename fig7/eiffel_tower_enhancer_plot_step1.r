@@ -11,17 +11,17 @@ library(stringr)
 library(genomation)
 
 
-out_dir <- "../../results/sequencing_run_before_promethion2/shared/eiffel_tower_plot_enhancer/"
+out_dir <- "./results/shared/eiffel_tower_plot_enhancer/"
 dir.create(out_dir, showWarnings=FALSE, recursive=TRUE )
 
 
 #### intersect beds with annotation to remove reads that overlap genode transcripts
-reads.curated_RBM7.name <- "../../results/sequencing_run_before_promethion2/mES-RBM7/get_primary_processed_bam/trimmed_primary_processed.bam"
-reads.curated_ZCCHC8.name <- "../../results/sequencing_run_before_promethion2/mES-ZCCHC8/get_primary_processed_bam/trimmed_primary_processed.bam"
-DHS.name <- "../../data/mES_histones_dnase/ENCFF048DWN_mm39.bed"
+reads.curated_RBM7.name <- "./results/mES-RBM7/get_primary_processed_bam/trimmed_primary_processed.bam"
+reads.curated_ZCCHC8.name <- "./results/mES-ZCCHC8/get_primary_processed_bam/trimmed_primary_processed.bam"
+DHS.name <- "../data/ENCFF048DWN_mm39.bed"
 
 
-gencode_annot.name <- "../../../shared_data/Mus_musculus.GRCm39.103.bed6"
+gencode_annot.name <- "../data/Mus_musculus.GRCm39.103.bed6"
 reads.curated_noAnnot.name <- file.path(out_dir, "all_reads_noAnnot.bam")
 
 command1 <- paste("module load bedtools; module load samtools; samtools merge",
@@ -29,12 +29,12 @@ command1 <- paste("module load bedtools; module load samtools; samtools merge",
                   " -o - | bedtools intersect -v -abam - ",
                   "-b",gencode_annot.name,
                   "| bedtools intersect -wa -abam - -b", DHS.name ,">",reads.curated_noAnnot.name )
-## system(command1)
+system(command1)
 
 reads.no.annot.list <- file.path(out_dir, "reads_no_annot.list")
 command3 <- paste("module load samtools; samtools view", reads.curated_noAnnot.name,
                   "| awk '{print $1}' >", reads.no.annot.list)
-## system(command3)
+system(command3)
 
 read_no_annot.df  <- read.table(reads.no.annot.list)
 

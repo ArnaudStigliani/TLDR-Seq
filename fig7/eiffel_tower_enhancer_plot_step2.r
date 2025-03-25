@@ -11,24 +11,24 @@ library(stringr)
 library(genomation)
 
 
-in_dir <- "../../results/sequencing_run_before_promethion2/shared/eiffel_tower_plot_enhancer/"
+in_dir <- "./results/shared/eiffel_tower_plot_enhancer/"
 
 arg = commandArgs(trailingOnly=TRUE)
 
 geno <- arg[1]
 ## geno <- "mES-RBM7"
 
-out_dir <- file.path("../../results/sequencing_run_before_promethion2/shared/eiffel_tower_plot_enhancer/", geno)
+out_dir <- file.path(in_dir, geno)
 dir.create(out_dir, showWarnings=FALSE, recursive=TRUE )
 
 
-reads.curated.name <- file.path("../../results/sequencing_run_before_promethion2/", geno, #### probably has to be del
+reads.curated.name <- file.path("./results/", geno, 
                                 "/get_primary_processed_bam/trimmed_primary_processed.bam")
 
-reads.curated_pAp.name <- file.path("../../results/sequencing_run_before_promethion2/", geno,
+reads.curated_pAp.name <- file.path("./results/", geno,
                                 "/get_primary_processed_bam/trimmed_primary_polyA_plus.bam")
 
-reads.curated_pAm.name <- file.path("../../results/sequencing_run_before_promethion2/", geno,
+reads.curated_pAm.name <- file.path("./results/", geno,
                                 "/get_primary_processed_bam/trimmed_primary_polyA_minus.bam")
 
 
@@ -37,10 +37,10 @@ gencode_annot.name <- "../../../shared_data/Mus_musculus.GRCm39.103.bed6"
 
 #### make a bed file, not sure it is useful but maybe it will be so that we can calculate sequencing depth
 
-read_curated_bed.name <- file.path("../../results/sequencing_run_before_promethion2/shared/eiffel_tower_plot_enhancer",geno,"trimmed_primary.bed")
+read_curated_bed.name <- file.path("./results/shared/eiffel_tower_plot_enhancer",geno,"trimmed_primary.bed")
 command1 <- paste("module load bedtools; bedtools bamtobed -i", reads.curated.name , ">", read_curated_bed.name)
 
-## system(command1)
+system(command1)
 
 
 
