@@ -9,8 +9,8 @@ slic_cage_1_name=$sliccage_out_dir/hg38.SLICCAGE_CPH4_SiGFB_1.bed
 slic_cage_2_name=$sliccage_out_dir/hg38.SLICCAGE_CPH4_SiGFB_2.bed
 slic_cage_3_name=$sliccage_out_dir/hg38.SLICCAGE_CPH4_SiGFB_3.bed
 
-gencodeall_tss_name="../../../shared_data/human_genome/gencode_v39_all_transcripts_for_TLDR.bed"
-gencodesubset_tss_name="../../../shared_data/human_genome/gencode_v39_subset_selected_transcripts_for_TLDR.bed"
+gencodeall_tss_name="../data/gencode_v39_all_transcripts_for_TLDR.bed"
+gencodesubset_tss_name="../data/gencode_v39_subset_selected_transcripts_for_TLDR.bed"
 
 
 lib1_tss_name=./results/bedfiles_from_bam/lib1.bed

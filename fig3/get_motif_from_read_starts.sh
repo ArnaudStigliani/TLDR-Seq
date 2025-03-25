@@ -4,10 +4,6 @@ results=./results/get_motifs_from_read_starts
 mkdir -p $results
 
 genome_fas=../data/GRCh38.primary_assembly.genome.fa
-
-module load perl
-module load perl-modules
-module load openmpi/4.1.0
 module load bedtools 
 
 

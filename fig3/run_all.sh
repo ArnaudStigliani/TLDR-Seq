@@ -7,7 +7,7 @@
 
 ./write_distance_tables.sh
 
-Rscript ./plot_distance_v2.r
+./plot_distance_tables.sh
 
 get_motif_from_read_starts.sh
 
