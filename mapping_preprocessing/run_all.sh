@@ -7,7 +7,7 @@ sequencing_run=$1
 fast5_dir=$2
 
 
-./pipeline_map.sh  $sequencing_run
+./pipeline_map.sh  $sequencing_run 123
 ./format_adapter_informations.sh $sequencing_run
 ./analyze_adapter_informations.r $sequencing_run
 ./demultiplex_read_names.sh $sequencing_run
